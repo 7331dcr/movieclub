@@ -1,0 +1,32 @@
+{% extends "movieclub/layout.html" %}
+
+{% load static %}
+
+{% block script %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h4><span class="">All reviews from: <a class="link" href="{% url 'profile' requested_user.username %}"><strong>{{requested_user.username}}</strong></a>.</span></h4>
+        <br>
+        <br>
+        {% for review in reviews %}
+            <a class="link" href="{% url 'movie' review.movie.id %}"><strong>{{review.movie.title}} ({{review.movie.year}})</strong></a>:
+            <br>
+            <br>
+            <a class="link" href="{% url 'review' review.id %}">{{review.title}}</a>
+            <br>
+            Rating: <strong>{{review.rating}}</strong>
+            <br>
+            <br>
+            {{review.review}}
+            <br>
+            <hr>
+        {% empty %}
+            No reviews yet.
+        {% endfor %}
+    </div>
+
+{% endblock %}
+

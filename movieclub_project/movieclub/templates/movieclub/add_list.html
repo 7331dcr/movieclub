@@ -1,0 +1,27 @@
+{% extends "movieclub/layout.html" %}
+
+{% load static %}
+
+{% block script %}
+    <!-- <script src="{% static 'movieclub/javascript.js' %}"></script> -->
+{% endblock %}
+
+{% block body %}
+
+    {% if user.is_authenticated %}
+        <br>
+        <div class="container">
+            <h4 class="marg">Add new list:</h4>
+            <br>
+            <form action="{% url 'add_list' %}" method="post">
+                {% csrf_token %}
+                <label for="name"></label>
+                <input type="text" name="name" autocomplete="off" placeholder="List name"><br><br>
+    
+                <input class="button" type="submit" value="Add list">
+            </form>
+        </div>
+    {% endif %}
+
+{% endblock %}
+

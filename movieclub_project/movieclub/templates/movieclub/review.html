@@ -1,0 +1,46 @@
+{% extends "movieclub/layout.html" %}
+
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'movieclub/review.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h4 id="review_title">Review: {{review.title}}.</h4>
+        <span>From: <a class="link" href="{% url 'profile' review.author %}">{{review.author}}</a>.</span>
+        <br><br>
+        <hr>
+        <div class="review">
+        
+            <a class="link" href="{% url 'movie' review.movie.id %}"><strong>{{review.movie.title}} ({{review.movie.year}})</strong></a>
+            <br>
+            <div id="review_{{review.id}}">
+                Rating: <strong>{{review.rating}}</strong>
+                <br>
+                <br>
+                {{review.review}}
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="-marg">
+            {% if user.is_authenticated %}
+                {% if review.author.username == user.username %}
+                    <div style="display: flex;">
+                        <input id="{{review.id}}" class="button edit-btn_{{review.id}}" type="button" value="Edit" onclick="edit_review(this.id)">
+                        <form action="{% url 'edit_review' review.id %}" method="post">
+                            {% csrf_token %}
+                            <input id="{{review.id}}" class="button delete-btn_{{review.id}}" type="submit" value="Delete">
+                        </form>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+        <hr>
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,39 @@
+{% extends "movieclub/layout.html" %}
+
+{% load static %}
+
+{% block script %}
+    <!-- <script src="{% static 'movieclub/javascript.js' %}"></script> -->
+{% endblock %}
+
+{% block body %}
+
+
+
+    <div class="container">
+        <h4><span class="">All lists from: <a class="link" href="{% url 'profile' requested_user.username %}"><strong>{{requested_user.username}}</strong></a>.</span></h4>
+        {% if user.is_authenticated %}
+            {% if user.username == requested_user.username %}
+                <a class="link" href="{% url 'add_list' %}">Create a new list.</a>
+            {% endif %}
+        {% endif %}
+        <br>
+        <br>
+        {% if lists %}
+        <br>
+        {% endif %}
+        {% for list in lists %}
+            <a class="link" href="{% url 'list' list.id %}"><strong>{{list.name}}</strong></a>
+            <br>
+            {% with movies=list.list_items.count %}
+                {{movies}} movies.
+            {% endwith %}
+            <br>
+            <hr>
+        {% empty %}
+            No lists yet.
+        {% endfor %}
+    </div>
+
+{% endblock %}
+

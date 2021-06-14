@@ -1,0 +1,102 @@
+{% extends "movieclub/layout.html" %}
+
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'movieclub/image.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+
+    <div class="movie-container container">
+        <div class="movie-poster">
+            <div class="movie-image">
+                <img src="{{movie.poster}}">
+            </div>
+            <span>
+                {% if rating %}
+                    Rating: {{rating.rating}}
+                {% else %}
+                    Not rated yet.
+                {% endif %}
+            </span>
+        </div>
+        <div class="movie-info">
+            <div class="mi-upper">
+                <h4><span><strong>{{movie.title}} - ({{movie.year}})</strong></span></h4>
+                <br>
+                <span>{{movie.synopsis}}</span>
+                <br>
+                <br>
+            </div>
+            {% if user.is_authenticated %}
+                <div class="mi-lower">
+                    <form action="{% url 'add_to_list' %}" method="post">
+                        {% csrf_token %}
+                        {% if lists %}
+                        <label for="list">Add movie to list: </label>
+                        <select name="list">
+                            {% for list in lists %}
+                                <option value="{{list.id}}">{{list.name}}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="hidden" name="movie" value="{{movie.id}}">
+                        
+                            <input class="button btn" type="submit" value="Add">
+                        {% else %}
+                            No lists yet.&nbsp;<a href="{% url 'add_list' %}">Create a list.</span></a>
+                        {% endif %}
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <br><br><br>
+
+    <div class="movie-form-c container">
+        <form class="movie-form" action="{% url 'add_review' movie.id %}" method="post">
+            <hr>
+            <br>
+            {% csrf_token %}
+    
+            <label for="title"></label>
+            <input type="text" id="title" name="title" autocomplete="off" placeholder="Review title"><br>
+    
+            <label for="rating"></label>
+            <input type="number" id="rating" name="rating" min="0" max="10" autocomplete="off" placeholder="Rating (0-10)"><br>
+    
+            <label for="review"></label>
+            <textarea name="review" id="review" placeholder="Review" rows="6" cols="60"></textarea><br>
+    
+            <input  class="button" type="submit" value="Submit">
+        </form>
+    </div>
+
+    <hr>
+    
+    <div class="movie-review-c container">
+        <h4>Recent reviews:</h4>
+        <br>
+        {% if reviews %}
+            {% for review in reviews %}
+                From: <a class="link" href="{% url 'profile' review.author %}"><strong>{{review.author}}</strong></a>:
+                <br>
+                <a class="link" href="{% url 'review' review.id %}">{{review.title}}</a>
+                <br>
+                Rating: {{review.rating}}
+                <br><br>
+                {{review.review}}
+                <br>
+                <hr>
+            {% endfor %}
+            <a class="link" href="{% url 'movie_reviews' movie.id %}">View all reviews for this movie.</a>
+            <br><br>
+        {% else %}
+            No reviews yet.
+            <br><br>
+        {% endif %}
+    </div>
+
+{% endblock %}
+

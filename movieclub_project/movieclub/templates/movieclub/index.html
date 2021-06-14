@@ -1,0 +1,25 @@
+{% extends "movieclub/layout.html" %}
+
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'movieclub/index.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+
+    <div class="index-container container">
+        <div id="search-container">
+            <form id="search-form">
+                <input autofocus name="movie" id="search-input" type="text" autocomplete="off" placeholder="Search movie by title">
+            </form>
+        </div>
+
+        <div id="movies-container container">
+            <div id="display">
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

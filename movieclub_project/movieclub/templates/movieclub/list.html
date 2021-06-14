@@ -1,0 +1,47 @@
+{% extends "movieclub/layout.html" %}
+
+{% load static %}
+
+{% block script %}
+    <!-- <script src="{% static 'movieclub/javascript.js' %}"></script> -->
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h4>List: {{list.name}}</h4>
+        <span>From: <a class="link" href="{% url 'profile' list.author %}">{{list.author}}</a>.</span>
+        <br><br>
+        {% if user.is_authenticated %}
+            {% if list.author.username == user.username %}
+                    <form action="{% url 'delete_list' list.id %}" method="post">
+                        {% csrf_token %}
+                        <input class="button" type="submit" value="Delete">
+                    </form>
+            {% endif %}
+        {% endif %}
+        {% for item in list_items %}
+            <hr>
+            Title: <a class="link" href="{% url 'movie' item.movie.id %}"><strong>{{item.movie.title}}</strong></a>.
+            <br>
+            Year: {{item.movie.year}}.
+            <br>
+            Synopsis: {{item.movie.synopsis}}
+            <br>
+            Rating:
+            {% with rating=item.movie.ratings.first %}
+                {% if rating %}    
+                    {{rating.rating}}.
+                {% else %}
+                    Not rated yet.
+                {% endif %}
+            {% endwith %}
+            <hr>
+        {% empty %}
+            <hr>
+            List is empty.
+        {% endfor %}
+    </div>
+
+{% endblock %}
+

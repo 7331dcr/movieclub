@@ -1,0 +1,79 @@
+{% extends "movieclub/layout.html" %}
+
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'movieclub/image.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+
+    <div class="profile-container container">
+        <div class="profile-upper" >
+            <div class="profile-img" >
+                <img src="{{requested_user.avatar}}">
+            </div>
+            <div class="profile-info" >
+                <h3>{{requested_user.username}}</h3>
+                <a class="link" href="{% url 'lists' requested_user.username %}">Lists</a>: {{lists_num}}
+                <br>
+                <a class="link" href="{% url 'user_reviews' requested_user.username %}">Reviews</a>: {{reviews_num}}
+                <br>
+            </div>
+        </div>
+
+        <br>
+        <hr>
+        
+        <div class="profile-lower">
+            <div class="profile-lists">
+                <h4>Latest lists:</h4>
+                <br>
+                {% for list in lists %}
+                    <div class="pl-item">
+                        <span class="pl-title"><a class="link" href="{% url 'list' list.id %}"><strong>{{list.name}}</strong></a></span>
+                        <span>
+                            {% with movies=list.list_items.count %}
+                                {{movies}} movies.
+                            {% endwith %}
+                        </span>
+                    </div>
+                {% empty %}
+                    <div class="pl-item">
+                        No lists.
+                    </div>
+                {% endfor %}
+                <hr style="margin-top: 0; width: 300px; min-width: 190px;">
+                <div>
+                    <a class="link" href="{% url 'lists' requested_user.username %}">All lists.</a>
+                </div>
+                
+            </div>
+
+            <div class="profile-reviews" >
+                <h4>Latest reviews:</h4>
+                <br>
+                {% for review in reviews %}
+                    <div class="pr-item">
+                        <span class="pr-title"><a class="link" href="{% url 'movie' review.movie.id %}"><strong>{{review.movie.title}} ({{review.movie.year}})</strong></a>:</span>
+                        <span><a class="link" href="{% url 'review' review.id %}">{{review.title}}</a></span>
+                        <span>Rating: {{review.rating}}</span>
+                    </div>
+                {% empty %}
+                    <div class="pr-item">
+                        No reviews yet.
+                    </div>
+                {% endfor %}
+                <hr style="margin-top: 0; width: 300px; min-width: 190px;">
+                <div>
+                    <a class="link" href="{% url 'user_reviews' requested_user.username %}">All reviews.</a>
+                </div>
+                
+            </div>
+        </div>
+        <br>
+        <br>
+    </div>
+
+{% endblock %}
+

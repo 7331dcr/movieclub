@@ -1,0 +1,42 @@
+{% extends "movieclub/layout.html" %}
+
+{% block body %}
+
+    <div class="container">
+
+        <h4 class="marg">Register:</h4>
+        <br>
+
+        {% if message %}
+            <div class="marg">{{ message }}</div>
+        {% endif %}
+
+        <form action="{% url 'register' %}" method="post">
+            {% csrf_token %}
+
+            <label for="username"></label>
+            <input autofocus autocomplete="off" type="text" name="username" placeholder="Username">
+            <br><br>
+
+            <label for="email"></label>
+            <input autocomplete="off" type="email" name="email" placeholder="Email Address">
+            <br><br>
+
+            <label for="password"></label>
+            <input type="password" name="password" placeholder="Password">
+            <br><br>
+
+            <label for="confirmation"></label>
+            <input type="password" name="confirmation" placeholder="Confirm Password">
+            <br><br>
+
+            <input class="button" type="submit" value="Register">
+        </form>
+    </div>
+
+    <div class="container">
+        <br>
+        Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+    </div>
+
+{% endblock %}
