@@ -1,5 +1,6 @@
 # Movieclub - A movie review aggregator.
 
+[Imgur](https://i.imgur.com/wNRpPIM.gifv)
 
 ## Stack:
 
